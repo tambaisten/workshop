@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Pengelolaan Keuangan Pribadi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      max-width: 600px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f1f1f1;
+      border-left: 5px solid #4CAF50;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Hitung Persentase Penggunaan Gaji</h1>
+
+  <label for="gaji">Total Gaji (Rp):</label>
+  <input type="number" id="gaji" placeholder="Contoh: 5000000">
+
+  <label for="greja">Untuk Greja (Rp):</label>
+  <input type="number" id="greja">
+
+  <label for="pinjaman">Pinjaman (Rp):</label>
+  <input type="number" id="pinjaman">
+
+  <label for="tabungan">Tabungan (Rp):</label>
+  <input type="number" id="tabungan">
+
+  <label for="ortu">Orang Tua (Rp):</label>
+  <input type="number" id="ortu">
+
+  <label for="kebutuhan">Kebutuhan Sehari-hari (Rp):</label>
+  <input type="number" id="kebutuhan">
+
+  <label for="hiburan">Hiburan & Self Reward (Rp):</label>
+  <input type="number" id="hiburan">
+
+  <label for="lainnya">Lainnya (Rp):</label>
+  <input type="number" id="lainnya">
+
+  <button onclick="hitungPersentase()">Hitung Persentase</button>
+
+  <div id="hasil" class="result"></div>
+
+  <script>
+    function hitungPersentase() {
+      const gaji = parseFloat(document.getElementById('gaji').value);
+      if (isNaN(gaji) || gaji <= 0) {
+        alert("Masukkan total gaji yang valid.");
+        return;
+      }
+
+      const kategori = ['greja', 'pinjaman', 'tabungan', 'ortu', 'kebutuhan', 'hiburan', 'lainnya'];
+      const label = {
+        greja: 'Greja',
+        pinjaman: 'Pinjaman',
+        tabungan: 'Tabungan',
+        ortu: 'Orang Tua',
+        kebutuhan: 'Kebutuhan Sehari-hari',
+        hiburan: 'Hiburan & Self Reward',
+        lainnya: 'Lainnya'
+      };
+
+      let hasilDiv = document.getElementById('hasil');
+      hasilDiv.innerHTML = '';
+
+      let totalPengeluaran = 0;
+
+      kategori.forEach(id => {
+        const nilai = parseFloat(document.getElementById(id).value) || 0;
+        totalPengeluaran += nilai;
+      });
+
+      if (totalPengeluaran > gaji) {
+        hasilDiv.innerHTML = '<strong style="color:red;">Total pengeluaran melebihi gaji!</strong>';
+        return;
+      }
+
+      kategori.forEach(id => {
+        const nilai = parseFloat(document.getElementById(id).value) || 0;
+        const persen = ((nilai / gaji) * 100).toFixed(2);
+        hasilDiv.innerHTML += `<div>${label[id]}: Rp ${nilai.toLocaleString()} (${persen}%)</div>`;
+      });
+
+      const sisa = gaji - totalPengeluaran;
+      hasilDiv.innerHTML += `<hr><div><strong>Sisa Gaji: Rp ${sisa.toLocaleString()}</strong></div>`;
+    }
+  </script>
+
+</body>
+</html>
